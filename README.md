@@ -8,4 +8,7 @@ The tool will be deployed within the AWS account, supplied with the S3 location 
 The calling procedure will handle saving the output to its destination.
 
 
+
+https://github.com/northcoders/grad-post-programme-projects/blob/main/DE/gdpr_obfuscator.md
+
 <!-- process data being ingested to AWS and intercept personally identifiable information (PII). -->

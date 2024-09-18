@@ -4,7 +4,7 @@ import csv
 def change_data(copy_file, pii):
 
     for arg in pii:
-    # loop around args for all columns to change
+    # loop around pii fields for all columns to change
         update_data = {arg: [None, '***']}
         # nested the original list inside another to hold the column index in the first position
 

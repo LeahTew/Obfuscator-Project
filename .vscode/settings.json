@@ -1,6 +1,4 @@
 {
-  "cSpell.words": [
-    "csvin",
-    "csvout"
-  ]
+  "cSpell.words": ["csvin", "csvout"],
+  "makefile.configureOnOpen": false
 }

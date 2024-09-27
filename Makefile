@@ -45,14 +45,6 @@ requirements: create-environment
 pytest:
 	$(call execute_in_env, $(PIP) install pytest)
 
-## Install pytest-testdox
-pytest-testdox:
-	$(call execute_in_env, $(PIP) install pytest-testdox)
-
-## Install dotenv
-dotenv:
-	$(call execute_in_env, $(PIP) install python-dotenv)
-
 ## Install bandit
 bandit:
 	$(call execute_in_env, $(PIP) install bandit)
@@ -82,10 +74,6 @@ security-test:
 ## Run the flake8 code check
 run-flake:
 	$(call execute_in_env, flake8  ./src/*/*.py ./test/*/*.py ./deployment/*.py)
-
-## Run the make tf-state bucket
-# run-make-bucket:
-# 	$(call execute_in_env, python ./deployment/run_tf_bucket.py)
 
 ## Run a single test
 unit-test:

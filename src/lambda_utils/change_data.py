@@ -1,46 +1,58 @@
 import csv
+import os
 
 
 def change_data(copy_file, pii):
+    """
+    Replaces sensitive data in specified columns of a CSV file with '***'.
 
-    for arg in pii:
-    # loop around pii fields for all columns to change
-        update_data = {arg: [None, '***']}
-        # nested the original list inside another to hold the column index in the first position
+    Args:
+        copy_file: The path to the copied CSV file.
+        pii_columns: A list of column names containing sensitive data.
 
-        line_no = 0
-        # counter for the first step
+    Returns:
+        Updated CSV filepath with the modified data.
 
-        new_csv = []
-        # Holds the new rows for rewriting the file.
+    Raises:
+        ValueError: If the CSV file cannot be opened or read.
+        KeyError: If a specified PII column is not found in the CSV file.
+    """
 
-        with open(copy_file, 'r') as csvfile:
-            filereader = csv.reader(csvfile)
+    try:
+        for arg in pii:
+            update_data = {arg: [None, '***']}
 
-            for line in filereader:
-                if line_no == 0:
+            line_no = 0
 
-                    for key in update_data:
-                        update_data[key][0] = line.index(key)
-                        # finds the columns index and stores it
+            new_csv = []
 
-                else:
+            with open(copy_file, 'r') as csvfile:
+                filereader = csv.reader(csvfile)
 
-                    for key in update_data:
-                        line[update_data[key][0]] = update_data[key][1]
-                        # using the column index, enter the new data into the correct place
+                for line in filereader:
+                    if line_no == 0:
 
-                new_csv.append(line)
+                        for key in update_data:
+                            update_data[key][0] = line.index(key)
 
-                line_no += 1
+                    else:
 
-        with open(copy_file, 'w') as csvfile:
-            filewriter = csv.writer(csvfile)
+                        for key in update_data:
+                            line[update_data[key][0]] = update_data[key][1]
 
-            for line in new_csv:
-                filewriter.writerow(line)
+                    new_csv.append(line)
 
+                    line_no += 1
 
-# change_data("./copy_file_data1.csv", 'email', 'name') << test print
+            with open(copy_file, 'w') as csvfile:
+                filewriter = csv.writer(csvfile)
 
-'''change given column data to ***'''
+                for line in new_csv:
+                    filewriter.writerow(line)
+
+            return os.path.abspath(copy_file)
+
+    except FileNotFoundError:
+        raise ValueError(f"CSV file '{copy_file}' not found.")
+    except csv.Error as e:
+        raise ValueError(f"Error reading CSV file: {e}")

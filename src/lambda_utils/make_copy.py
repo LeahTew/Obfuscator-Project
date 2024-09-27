@@ -1,24 +1,39 @@
 import pandas as pd
 import os
+import tempfile
 
 
-def make_copy(filename):
+def make_copy(filename, output_filename=None):
     """
-    This function reads a csv file, makes an exact copy in a new file and returns the copied file path.
+    This function reads a csv file, makes an exact copy in
+    a new file and returns the copied file path
 
     Args:
-        `filename`: string of the csv file name
-    ---------------------------
+        filename: string of the csv file name
+        output_filename: optional string of the desired output file name.
+        If not provided, a default name will be generated
+
     Returns:
-        `copy_path`: sting of the copied csv absolute path
+        string of the copied CSV absolute path
 
     Raises:
-        ?????
+        FileNotFoundError: If the specified input file does not exist
+        EmptyDataError: If the CSV file is empty
     """
 
+    if not os.path.exists(filename):
+        raise FileNotFoundError(f"File '{filename}' not found.")
+
+    if not output_filename:
+        output_filename = tempfile.mkstemp(suffix=".csv")[1]
+
     with open(filename, "r") as source:
-        reader = pd.read_csv(source)
-        reader.to_csv('copy_file.csv', index=False)
-        print(f'A copy of {filename} has been created')
-        copy_path = os.path.abspath('copy_file.csv')
-    return copy_path
+        try:
+            df = pd.read_csv(source)
+        except pd.errors.EmptyDataError:
+            raise EmptyDataError(f"File '{filename}' is empty")
+
+    df.to_csv(output_filename, index=False)
+
+    print(f"A copy of '{filename}' has been created as '{output_filename}'.")
+    return os.path.abspath(output_filename)

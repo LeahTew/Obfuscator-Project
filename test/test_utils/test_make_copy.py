@@ -3,6 +3,7 @@ from unittest.mock import patch
 import pytest
 import os
 import pandas as pd
+import tempfile
 
 
 @pytest.fixture
@@ -67,35 +68,26 @@ def test_copied_file_has_correct_extension(mocker):
     copy_path = make_copy(filename)
     assert copy_path.endswith(".csv")
 
-# VV TEST FAILING VV
-# @pytest.mark.describe("make_copy")
-# @pytest.mark.it("checks if copied file has the same content as the original")
-# @patch("src.lambda_utils.make_copy.pd")
-# def test_copied_file_has_correct_content(mocker):
-#     """
-#     Tests that the copied file has the same content as the original file.
 
-#     Args:
-#         mocker (pytest.Mocker): A pytest mocker object.
-#     """
+@pytest.mark.describe("make_copy")
+@pytest.mark.it("checks if copied file has the same content as the original")
+def test_make_copy_identical_content():
+    """
+    Tests if the copied file has the same content as the original file.
+    """
+    sample_data = {"column1": [1, 2, 3], "column2": ["a", "b", "c"]}
+    original_file = tempfile.mkstemp(suffix=".csv")[1]
+    pd.DataFrame(sample_data).to_csv(original_file, index=False)
 
-#     filename = "./mock_data/mock_data.csv"
-#     original_df = pd.read_csv(filename)
-#     print(original_df)
+    copied_file = make_copy(original_file)
 
-#     mocker.patch('pd.read_csv', return_value=original_df)
+    original_df = pd.read_csv(original_file)
+    copied_df = pd.read_csv(copied_file)
 
-#     # Create a temporary file with a known name
-#     mocker.patch('tempfile.mkstemp', return_value=(1, "copied_file.csv"))
+    assert original_df.equals(copied_df)
 
-#     # Call the function to make a copy
-#     copy_path = make_copy(filename)
-
-#     # Read the copied file using pandas
-#     copied_df = pd.read_csv(copy_path)
-
-#     # Assert that the DataFrames are equal
-#     assert original_df.equals(copied_df)
+    os.remove(original_file)
+    os.remove(copied_file)
 
 
 @pytest.mark.describe("make_copy")

@@ -2,3 +2,5 @@
 copy_file.csv
 Makefile
 json_files
+.coverage
+.env

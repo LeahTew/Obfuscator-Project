@@ -20,7 +20,6 @@ def make_copy(filename, output_filename=None):
         FileNotFoundError: If the specified input file does not exist
         EmptyDataError: If the CSV file is empty
     """
-
     if not os.path.exists(filename):
         raise FileNotFoundError(f"File '{filename}' not found.")
 
@@ -30,8 +29,8 @@ def make_copy(filename, output_filename=None):
     with open(filename, "r") as source:
         try:
             df = pd.read_csv(source)
-        except pd.errors.EmptyDataError:
-            raise EmptyDataError(f"File '{filename}' is empty")
+        except pd.errors.EmptyDataError as e:
+            raise e(f"File '{filename}' is empty")
 
     df.to_csv(output_filename, index=False)
 

@@ -50,9 +50,10 @@ def change_data(copy_file, pii):
                 for line in new_csv:
                     filewriter.writerow(line)
 
-            return os.path.abspath(copy_file)
+        return os.path.abspath(copy_file)
 
     except FileNotFoundError:
-        raise ValueError(f"CSV file '{copy_file}' not found.")
+        raise FileNotFoundError(f"CSV file '{copy_file}' not found.")
+
     except csv.Error as e:
-        raise ValueError(f"Error reading CSV file: {e}")
+        raise e(f"Error reading CSV file: {e}")

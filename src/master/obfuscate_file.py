@@ -2,6 +2,8 @@ from src.lambda_utils.read_json import read_json
 from src.lambda_utils.download_s3 import download_s3
 from src.lambda_utils.make_copy import make_copy
 from src.lambda_utils.change_data import change_data
+import logging
+import time
 
 
 def obfuscate_file(file_req):
@@ -20,15 +22,42 @@ def obfuscate_file(file_req):
         EmptyDataError: If the CSV file is empty.
     """
 
-    print('Request to obfuscate file beginning...')
+    logging.info("Request to obfuscate file beginning...")
+    try:
+        requested = read_json(file_req)
 
-    requested = read_json(file_req)
+    except FileNotFoundError as e:
+        logging.error(f"Input file '{file_req}' not found: {e}")
+        raise
 
-    filepath = list(requested)[0]
-    pii_fields = list(requested)[1]
+    try:
+        filepath = list(requested)[0]
+        pii_fields = list(requested)[1]
 
-    downloaded_file = download_s3(filepath)
-    new_file = make_copy(downloaded_file)
+    except IndexError as e:
+        logging.error(f"Invalid input file format: {e}")
+        raise
 
-    change_data(new_file, pii_fields)
-    return print(f'{new_file} has been obfuscated')
+    try:
+        downloaded_file = download_s3(filepath)
+        time.sleep(10)
+
+    except Exception as e:  # Catch all exceptions for S3 download
+        logging.error(f"Failed to download file from S3: {e}")
+        raise
+
+    try:
+        new_file = make_copy(downloaded_file)
+
+    except Exception as e:  # Catch all exceptions for file copy
+        logging.error(f"Failed to create copy of file: {e}")
+        raise
+
+    try:
+        change_data(new_file, pii_fields)
+
+    except Exception as e:  # Catch all exceptions for data change
+        logging.error(f"Failed to change data in file: {e}")
+        raise
+
+    logging.info(f"{new_file} has been obfuscated")

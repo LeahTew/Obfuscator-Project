@@ -25,10 +25,12 @@ def read_json(json_file):
         return values
 
     except FileNotFoundError:
-        print(f"Error: JSON file '{json_file}' not found.")
+        raise FileNotFoundError(f"Error: JSON file '{json_file}' not found.")
 
     except json.JSONDecodeError as e:
         print(f"Error decoding JSON: {e}")
+        raise e
 
     except Exception as e:
         print(f"Unexpected error: {e}")
+        raise e

@@ -1,4 +1,4 @@
 {
-    "file_to_obfuscate": "./mock_data/mock_data4.csv",
+    "file_to_obfuscate": "./mock_data/mock_data.csv",
     "pii_fields": ["name", "email_address"]
 }

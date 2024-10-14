@@ -1,4 +1,9 @@
 {
   "cSpell.words": ["csvin", "csvout"],
-  "makefile.configureOnOpen": false
+  "makefile.configureOnOpen": false,
+  "python.testing.pytestArgs": [
+    "test"
+  ],
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestEnabled": true
 }

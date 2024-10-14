@@ -73,15 +73,15 @@ security-test:
 
 ## Run the flake8 code check
 run-flake:
-	$(call execute_in_env, flake8  ./src/*/*.py ./test/*/*.py ./deployment/*.py)
+	$(call execute_in_env, flake8  ./src/*/*.py ./test/*/*.py)
 
 ## Run a single test
 unit-test:
-	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -vvrP ${test_run})
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest -vvrP ${test_run})
 
 ## Run the unit tests
 unit-tests:
-	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest --testdox -vvrP)
+	$(call execute_in_env, PYTHONPATH=${PYTHONPATH} pytest -vvrP)
 
 ## Run the coverage check
 check-coverage:

@@ -20,7 +20,10 @@ The master function 'obfuscate_file(filepath)' is supplied with a json file path
 
 The function flows through the util functions below
 
-The end product is a file with obfuscated strings that has replaced the original data/
+The end product is a file with obfuscated strings that has replaced the original data.
+
+##### Execute obfuscate file:
+run `obfuscate_file(json_file)` replacing `json_file` with your given JSON filepath.
 
 
 ## Util Functions
@@ -45,5 +48,19 @@ The absolute path of the copied csv file is returned.
 change_data() takes the copied csv file path and the PII fields obtained from `read_json()` to identify the index of the required fields needing the data changed to `***`.
 
 The copied csv file is overwritten to the updated data fields.
+
+
+## Testing Functions
+To test a specific function, run `make unit-test file/to/test`, replacing `file/to/test` with the required test filepath.
+
+To test all the functions, run `make unit-tests`. This will execute pytest for all functions.
+
+To test security on the requirements and python files, run `make security-test` which uses a safety check and bandit.
+
+To test for PEP8 compliance, run `make run-flake`.
+
+To test the test coverage of the functions, run `make check-coverage`.
+
+You can also run all the tests as one by using `make run-checks`.
 
 https://github.com/northcoders/grad-post-programme-projects/blob/main/DE/gdpr_obfuscator.md

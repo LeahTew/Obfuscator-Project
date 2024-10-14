@@ -1,9 +1,9 @@
-from src.lambda_utils.make_copy import make_copy
 from unittest.mock import patch
-import pytest
 import os
-import pandas as pd
 import tempfile
+import pandas as pd
+import pytest
+from src.lambda_utils.make_copy import make_copy
 
 
 @pytest.fixture

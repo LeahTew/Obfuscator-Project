@@ -1,7 +1,7 @@
-from src.lambda_utils.download_s3 import download_s3
-import botocore
 from unittest.mock import patch
 import pytest
+import botocore
+from src.lambda_utils.download_s3 import download_s3
 
 
 @pytest.mark.describe("download_s3")
@@ -26,6 +26,28 @@ def test_successful_download():
 
 
 @pytest.mark.describe("download_s3")
+@pytest.mark.it("""Test successful s3 download file method without key""")
+def test_successful_download_without_key():
+    """
+    Tests the download_s3 function when a file is
+    successfully downloaded if no key provided.
+
+    Raises:
+        AssertionError: If the test fails.
+    """
+    with patch('boto3.client') as mock_client:
+        filepath = 's3://test_bucket/test_file.csv'
+        mock_client.return_value.download_file.return_value = None
+
+        result = download_s3(filepath)
+
+        assert result == 'test_file.csv'
+        mock_client.assert_called_once_with('s3')
+        mock_client.return_value.download_file.assert_called_once_with(
+            'test_bucket', 'test_file.csv', 'test_file.csv')
+
+
+@pytest.mark.describe("download_s3")
 @pytest.mark.it("""Test file not found""")
 def test_file_not_found():
     """
@@ -36,8 +58,9 @@ def test_file_not_found():
     """
     with patch('boto3.client') as mock_client:
         filepath = 's3://test_bucket/folder1/no_test_file.csv'
-        mock_client.return_value.download_file.side_effect = botocore.exceptions.ClientError(
-            {'Error': {'Code': '404'}}, 'operation')
+        mock_client.return_value.download_file.side_effect = (
+            botocore.exceptions.ClientError(
+                {'Error': {'Code': '404'}}, 'operation'))
 
         result = download_s3(filepath)
 
@@ -58,8 +81,9 @@ def test_client_error():
     """
     with patch('boto3.client') as mock_client:
         filepath = 's3://test_bucket/folder1/test_file.csv'
-        mock_client.return_value.download_file.side_effect = botocore.exceptions.ClientError(
-            {'Error': {'Code': 'InternalServerError'}}, 'operation')
+        mock_client.return_value.download_file.side_effect = (
+            botocore.exceptions.ClientError(
+                {'Error': {'Code': 'InternalServerError'}}, 'operation'))
 
         try:
             download_s3(filepath)

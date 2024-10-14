@@ -17,7 +17,7 @@ def read_json(json_file):
         Exception: If there is an unexpected error.
     """
     try:
-        with open(json_file, 'r') as jf:
+        with open(json_file, 'r', encoding='utf-8') as jf:
             sample_load_file = json.load(jf)
 
         values = sample_load_file.values()

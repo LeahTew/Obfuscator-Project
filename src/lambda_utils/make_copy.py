@@ -1,6 +1,6 @@
-import pandas as pd
 import os
 import tempfile
+import pandas as pd
 
 
 def make_copy(filename, output_filename=None):

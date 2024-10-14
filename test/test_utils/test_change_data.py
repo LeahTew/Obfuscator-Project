@@ -1,8 +1,8 @@
-from src.lambda_utils.change_data import change_data
-import pytest
 import csv
 import tempfile
 import os
+import pytest
+from src.lambda_utils.change_data import change_data
 
 
 @pytest.fixture

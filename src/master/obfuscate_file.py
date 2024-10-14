@@ -1,9 +1,9 @@
+import logging
+import time
 from src.lambda_utils.read_json import read_json
 from src.lambda_utils.download_s3 import download_s3
 from src.lambda_utils.make_copy import make_copy
 from src.lambda_utils.change_data import change_data
-import logging
-import time
 
 
 def obfuscate_file(file_req):
@@ -42,21 +42,21 @@ def obfuscate_file(file_req):
         downloaded_file = download_s3(filepath)
         time.sleep(10)
 
-    except Exception as e:  # Catch all exceptions for S3 download
+    except Exception as e:
         logging.error(f"Failed to download file from S3: {e}")
         raise
 
     try:
         new_file = make_copy(downloaded_file)
 
-    except Exception as e:  # Catch all exceptions for file copy
+    except Exception as e:
         logging.error(f"Failed to create copy of file: {e}")
         raise
 
     try:
         change_data(new_file, pii_fields)
 
-    except Exception as e:  # Catch all exceptions for data change
+    except Exception as e:
         logging.error(f"Failed to change data in file: {e}")
         raise
 

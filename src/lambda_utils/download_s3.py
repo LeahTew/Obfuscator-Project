@@ -20,7 +20,7 @@ def download_s3(filepath):
     path_parts = filepath.replace("s3://", "").split("/")
     bucket = path_parts.pop(0)
     key = "/".join(path_parts)
-    filename = path_parts[1]
+    filename = os.path.basename(key)
 
     s3 = boto3.client('s3')
 

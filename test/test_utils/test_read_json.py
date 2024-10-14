@@ -1,7 +1,7 @@
-from src.lambda_utils.read_json import read_json
 from unittest.mock import patch, mock_open
-import pytest
 import json
+import pytest
+from src.lambda_utils.read_json import read_json
 
 
 @pytest.mark.describe("read_json")
